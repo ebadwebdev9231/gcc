@@ -99,7 +99,7 @@ export default {
 
   .nav-links {
     position: absolute;
-    top: 100px;
+    top: 80px;
     left: 0;
     right: 0;
     background-color: #111;
