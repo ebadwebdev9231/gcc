@@ -90,6 +90,9 @@ export default {
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  .logo {
+    width: 120px;
+  }
   .menu-toggle {
     display: block;
   }
