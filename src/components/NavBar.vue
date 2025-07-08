@@ -1,30 +1,34 @@
 <template>
-  <nav class="navbar">
+  <nav class="navigation">
     <div class="container">
-    <div class="navbar-container">
-      <div class="logo"><a href="#"><img src="@/assets/gcc-logo.png" alt=""></a></div>
+      <div class="navigation-container">
+        <div class="logo">
+          <router-link to="/">
+            <img src="@/assets/gcc-logo.png" alt="Logo" />
+          </router-link>
+        </div>
 
-      <!-- Hamburger / Close Icon -->
-      <button class="menu-toggle" @click="toggleMenu">
-        <span v-if="!menuOpen">&#9776;</span> <!-- ☰ -->
-        <span v-else>&times;</span>           <!-- × -->
-      </button>
+        <!-- Hamburger / Close Icon -->
+        <button class="menu-toggle" @click="toggleMenu">
+          <span v-if="!menuOpen">&#9776;</span> <!-- ☰ -->
+          <span v-else>&times;</span>           <!-- × -->
+        </button>
 
-      <!-- Nav Links -->
-      <ul :class="['nav-links', { open: menuOpen }]">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
+        <!-- Nav Links -->
+        <ul :class="['nav-links', { open: menuOpen }]">
+          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/integration">Integration</router-link></li>
+          <li><router-link to="/services">Services</router-link></li>
+          <li><router-link to="/contact">Contact</router-link></li>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
 export default {
-  name: 'NavBar',
+  name: 'navigation',
   data() {
     return {
       menuOpen: false,
@@ -39,13 +43,13 @@ export default {
 </script>
 
 <style scoped>
-.navbar {
+.navigation {
   background-color: #111;
   color: #fff;
   padding: 10px 0;
 }
 
-.navbar-container {
+.navigation-container {
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
