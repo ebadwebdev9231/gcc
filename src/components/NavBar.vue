@@ -18,7 +18,7 @@
         <ul :class="['nav-links', { open: menuOpen }]">
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/integration">Integration</router-link></li>
-          <li><router-link to="/services">Services</router-link></li>
+          <li><router-link to="/pricing">Pricing</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
         </ul>
       </div>
