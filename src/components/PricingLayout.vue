@@ -28,7 +28,7 @@
           <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Essential</h3>
             <h2 class="card-price mb-3">
-              ${{ billingType === 'yearly' ? '69.95' : '89.95' }}<small class="text-muted">/mo</small>
+              ${{ billingType === 'yearly' ? '69.95' : '99.95' }}<small class="text-muted">/mo</small>
             </h2>
             <p class="text-muted mb-3">
               For those who are only looking to service one platform
@@ -52,7 +52,7 @@
           <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Pro</h3>
             <h2 class="card-price mb-3">
-              ${{ billingType === 'yearly' ? '139.95' : '159.95' }}<small class="text-muted">/mo</small>
+              ${{ billingType === 'yearly' ? '139.95' : '179.95' }}<small class="text-muted">/mo</small>
             </h2>
             <p class="text-light mb-3">
               For those looking to service all available platforms
