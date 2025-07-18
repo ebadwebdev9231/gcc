@@ -1,11 +1,11 @@
 <template>
     <section class="features">
       <div class="container">
-      <h2>What Cruise Control Can Do For You</h2>
+      <h2 class="fw-bold">What Cruise Control Can Do For You</h2>
       <div class="grid">
         <div class="card" v-for="feature in features" :key="feature.title">
           <div class="icon" v-html="feature.icon"></div>
-          <h3>{{ feature.title }}</h3>
+          <h3 class="fw-bold">{{ feature.title }}</h3>
           <p>{{ feature.description }}</p>
         </div>
       </div>

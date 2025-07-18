@@ -55,17 +55,20 @@
   gap: 100px;
 }
 
-h1 {
+.content h1 {
   font-size: 5rem;
-  color: #00cfff;
+  font-weight: 800;
   line-height: 1;
+  background: linear-gradient(to right, #4ae3b5, rgb(29 198 255));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-h1 span {
+.content h1 span {
   font-weight: 700;
 }
 
-p {
+.content p {
   margin: 20px 0;
   font-size: 1.1rem;
   color: #fff;
@@ -105,7 +108,7 @@ button {
   .container {
     gap: 50px;
   }
-  h1 {
+  .content h1 {
     font-size: 3rem;
   }
 }
@@ -116,7 +119,10 @@ button {
     justify-content: center;
   }
   .content {
-    padding: 20px;
+    padding: 10px;
+  }
+  .content h1 {
+    font-size: 2.6rem;
   }
 }
 </style>

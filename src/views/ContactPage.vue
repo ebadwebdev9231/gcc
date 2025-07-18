@@ -28,7 +28,7 @@
                 <textarea v-model="form.message" id="message" rows="4" class="form-control" required></textarea>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100">Send Message</button>
+              <button type="submit" class="btn btn-info w-100 text-white fw-bold py-2">Send Message</button>
             </form>
           </div>
         </div>
