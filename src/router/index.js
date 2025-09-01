@@ -6,7 +6,7 @@ import Pricing from '@/views/Pricing.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/integration', name: 'Integration', component: Integration },
+  { path: '/integrations', name: 'Integration', component: Integration },
   { path: '/contact', name: 'Contact', component: ContactPage },
   { path: '/pricing', name: 'Pricing', component: Pricing }
 ]
