@@ -68,6 +68,7 @@ export default {
   display: flex;
   gap: 1.5rem;
   list-style: none;
+  margin-bottom: 0;
 }
 
 .nav-links li a {

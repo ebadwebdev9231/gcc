@@ -24,7 +24,7 @@
 <style scoped>
 .hero {
   position: relative;
-  height: 100vh;
+  min-height: 800px;
   overflow: hidden;
   color: white;
 }
@@ -40,9 +40,9 @@
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(14, 24, 39, .75);
   width: 100%;
-  height: 100%;
+  height: 800px;
   position: relative;
   z-index: 1;
 }
