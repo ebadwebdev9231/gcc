@@ -33,7 +33,15 @@
             <p class="text-muted mb-3">
               For those who are only looking to service one platform
             </p>
-            <button class="btn btn-info text-white mb-4 w-100 custom-button">Purchase Plan</button>
+
+            <!-- Dynamic Button -->
+            <a
+              :href="plans.essential[billingType]"
+              target="_blank"
+              class="btn btn-info text-white mb-4 w-100 custom-button"
+            >
+              Purchase Plan
+            </a>
 
             <h6><strong>Includes:</strong></h6>
             <ul class="list-unstyled pricing-list">
@@ -57,7 +65,15 @@
             <p class="text-light mb-3">
               For those looking to service all available platforms
             </p>
-            <button class="btn btn-info text-white mb-4 w-100 custom-button">Purchase Plan</button>
+
+            <!-- Dynamic Button -->
+            <a
+              :href="plans.pro[billingType]"
+              target="_blank"
+              class="btn btn-info text-white mb-4 w-100 custom-button"
+            >
+              Purchase Plan
+            </a>
 
             <h6><strong>Includes:</strong></h6>
             <ul class="list-unstyled pricing-list">
@@ -73,6 +89,27 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      billingType: 'yearly',
+      plans: {
+        essential: {
+          yearly: "https://buy.stripe.com/3cI9AU8Zt1Dt1qG0MTfrW08",
+          monthly: "https://buy.stripe.com/cNi7sMejNci7d9ogLRfrW09"
+        },
+        pro: {
+          yearly: "https://buy.stripe.com/3cI28s2B5gynfhw67dfrW0a",
+          monthly: "https://buy.stripe.com/14A9AU2B54PFb1gfHNfrW0b"
+        }
+      }
+    }
+  }
+}
+</script>
+
 
 <script setup>
 import { ref } from 'vue';
