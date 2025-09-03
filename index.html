@@ -10,6 +10,28 @@
 />
 
     <title>Get Cruise Control</title>
+    <script>
+  window.chatwootSettings = {
+    position: "right",
+    type: "expanded_bubble",
+    launcherTitle: "Chat with us"
+  };
+
+  (function(d, t) {
+    var BASE_URL = "https://courier.getcruisecontrol.com";
+    var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    g.src = BASE_URL + "/packs/js/sdk.js";
+    g.defer = true;
+    g.async = true;
+    s.parentNode.insertBefore(g, s);
+    g.onload = function() {
+      window.chatwootSDK.run({
+        websiteToken: 'cwGcA6X3Eq872QYRvoLi52yh',
+        baseUrl: BASE_URL
+      });
+    };
+  })(document, "script");
+</script>
   </head>
   <body>
     <div id="app"></div>
