@@ -4,7 +4,7 @@ defineProps({ dealer: Object });
 
 <template>
   <div class="border rounded-lg p-4 shadow-md">
-    <h3 class="text-xl font-semibold">{{ dealer.name }}</h3>
+    <h3 class="text-xl font-bold">{{ dealer.name }}</h3>
     <p>Phone: {{ dealer.phone_number }}</p>
     <p>GM: {{ dealer.general_manager }}</p>
     <router-link

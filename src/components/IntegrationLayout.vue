@@ -1,6 +1,6 @@
 <template>
   <section class="container py-5 bg-white text-dark integration-section">
-    <h2 class="h2 fw-bold mb-5 text-center">
+    <h2 class="fw-bold mb-5 text-center">
       Easily engage with your customers wherever they are.
     </h2>
     <div class="row g-4 mt-5">

@@ -20,6 +20,7 @@
           <li><router-link to="/integrations">Integrations</router-link></li>
           <li><router-link to="/pricing">Pricing</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
+          <li><router-link to="/dealerships">Dealerships</router-link></li>
         </ul>
       </div>
     </div>
