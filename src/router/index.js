@@ -4,11 +4,24 @@ import Integration from '../views/Integration.vue'
 import ContactPage from '@/views/ContactPage.vue'
 import Pricing from '@/views/Pricing.vue'
 
+// New dealership routes
+import DealershipList from "@/views/DealershipList.vue";
+import DealershipProfile from "@/views/DealershipProfile.vue";
+
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/integrations', name: 'Integration', component: Integration },
   { path: '/contact', name: 'Contact', component: ContactPage },
-  { path: '/pricing', name: 'Pricing', component: Pricing }
+  { path: '/pricing', name: 'Pricing', component: Pricing },
+
+  // New Dealership routes
+  { path: "/dealerships", name: "DealershipList", component: DealershipList },
+  { 
+    path: "/dealership/:slug", 
+    name: "DealershipProfile", 
+    component: DealershipProfile, 
+    props: true 
+  }
 ]
 
 const router = createRouter({
