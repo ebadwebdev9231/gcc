@@ -22,7 +22,7 @@ export default defineConfig({
       "/api": {
         target: "https://dev.pressroom.getcruisecontrol.com",
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
     },
   },
