@@ -1,11 +1,11 @@
-// src/api.js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api", // this now points to your Vercel serverless functions
+  baseURL: "/api/v1",
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": `Bearer i6NpaCOX7aDXVWfHsnxgJKYuDftBfhxb`
   },
 });
 

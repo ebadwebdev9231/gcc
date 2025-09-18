@@ -13,16 +13,12 @@ const loading = ref(true);
 onMounted(async () => {
   try {
     const res = await api.get(`/dealerships/${route.params.slug}`);
-    console.log("✅ API Response:", res.data);
-
-    // Safe check response structure
-    if (res.data && res.data.body && res.data.body.data) {
+    if (res.data?.body?.data) {
       dealership.value = res.data.body.data;
     } else {
       throw new Error("Unexpected API response format");
     }
   } catch (err) {
-    console.error("❌ API Error:", err);
     error.value = err.message || "Failed to fetch dealership";
   } finally {
     loading.value = false;
@@ -31,25 +27,27 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container p-4">
+  <div class="container py-5">
     <!-- Loading -->
-    <p v-if="loading">Loading dealership...</p>
+    <div v-if="loading" class="text-center text-muted">Loading dealership...</div>
 
     <!-- Error -->
-    <p v-else-if="error" class="text-red-500">{{ error }}</p>
+    <div v-else-if="error" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
 
     <!-- Success -->
-    <div v-else-if="dealership">
+    <div v-else-if="dealership" class="card shadow-sm p-4">
       <h2 class="fw-bold mb-3">{{ dealership.name }}</h2>
-      <p>GM: {{ dealership.general_manager }}</p>
-      <p>Phone: {{ dealership.phone_number }}</p>
+      <p><strong>GM:</strong> {{ dealership.general_manager }}</p>
+      <p><strong>Phone:</strong> {{ dealership.phone_number }}</p>
 
       <a
         :href="dealership.website"
         target="_blank"
-        class="text-blue-600 underline"
+        class="btn btn-outline-primary btn-sm mb-4"
       >
-        {{ dealership.website }}
+        🌐 Visit Website
       </a>
 
       <!-- Address -->

@@ -10,10 +10,8 @@ const error = ref(null);
 onMounted(async () => {
   try {
     const res = await api.get("/dealerships");
-    console.log("✅ API Response:", res.data); // log full response
-    dealerships.value = res.data.body.data;   // store data
+    dealerships.value = res.data.body.data;
   } catch (err) {
-    console.error("❌ API Error:", err); // log error details
     error.value = err.message || "Failed to fetch dealerships";
   } finally {
     loading.value = false;
@@ -22,22 +20,22 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container p-4 dealership-list">
-    <h1 class="fw-bold mb-5">Dealerships</h1>
+  <div class="container py-5">
+    <h1 class="fw-bold text-center mb-5">Dealerships</h1>
 
     <!-- Show loading -->
-    <p v-if="loading">Loading dealerships...</p>
+    <div v-if="loading" class="text-center text-muted">Loading dealerships...</div>
 
     <!-- Show error -->
-    <p v-else-if="error" class="text-red-500">{{ error }}</p>
+    <div v-else-if="error" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
 
     <!-- Show dealerships -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <DealershipCard
-        v-for="dealer in dealerships"
-        :key="dealer.id"
-        :dealer="dealer"
-      />
+    <div v-else class="row g-4">
+      <div v-for="dealer in dealerships" :key="dealer.id" class="col-12 col-md-6 col-lg-4">
+        <DealershipCard :dealer="dealer" />
+      </div>
     </div>
   </div>
 </template>
