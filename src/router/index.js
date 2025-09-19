@@ -6,8 +6,7 @@ import Pricing from '@/views/Pricing.vue'
 
 // New dealership routes
 import DealershipList from "@/views/DealershipList.vue";
-import DealershipProfile from "@/views/DealershipProfile.vue";
-import BookingPage from '@/views/BookingPage.vue'
+import DealershipProfile from "@/views/DealershipProfile.vue"
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -22,9 +21,7 @@ const routes = [
     name: "DealershipProfile", 
     component: DealershipProfile, 
     props: true 
-  },
-
-  { path: "/booking", name: "BookingPage", component: BookingPage },
+  }
 ]
 
 const router = createRouter({

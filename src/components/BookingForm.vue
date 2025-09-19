@@ -1,151 +1,126 @@
-<template>
-  <div class="container my-5">
-    <div class="card shadow-lg border-0 rounded-3 mx-auto" style="max-width: 600px;">
-      <div class="card-body p-4">
-        <h2 class="card-title text-center mb-4 fw-bold">Book an Appointment</h2>
-
-        <form @submit.prevent="submitBooking">
-          <!-- Name -->
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input
-              v-model="form.name"
-              type="text"
-              class="form-control"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-
-          <!-- Email -->
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              class="form-control"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-
-          <!-- Phone -->
-          <div class="mb-3">
-            <label class="form-label">Phone Number</label>
-            <input
-              v-model="form.phone_number"
-              type="text"
-              class="form-control"
-              placeholder="e.g. 123-456-7890"
-              required
-            />
-          </div>
-
-          <!-- Booking Date -->
-          <div class="mb-3">
-            <label class="form-label">Booking Date</label>
-            <input
-              v-model="form.booking_date"
-              type="date"
-              class="form-control"
-              required
-            />
-          </div>
-
-          <!-- Platform -->
-          <div class="mb-3">
-            <label class="form-label">Platform</label>
-            <select v-model="form.platform" class="form-select" required>
-              <option disabled value="">Select Platform</option>
-              <option value="instagram">Instagram</option>
-              <option value="facebook">Facebook</option>
-              <option value="website">Website</option>
-            </select>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="d-grid">
-            <button
-              type="submit"
-              class="btn btn-info btn-lg"
-              :disabled="loading"
-            >
-              {{ loading ? "Booking..." : "Submit Booking" }}
-            </button>
-          </div>
-        </form>
-
-        <!-- Success / Error Message -->
-        <div v-if="message" class="alert alert-success mt-4">
-          {{ message }}
-        </div>
-        <div v-if="error" class="alert alert-danger mt-4">
-          {{ error }}
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
+<script setup>
+import { ref, watch } from "vue";
 import api from "@/services/api";
 
-export default {
-  name: "BookingForm",
-  data() {
-    return {
-      form: {
-        dealership_id: "d8bf6d8c-2454-44d3-9334-2d546e980f37",
-        conversation_id: 372,
-        account_id: 12,
-        name: "",
-        email: "",
-        phone_number: "",
-        booking_date: "",
-        platform: ""
-      },
-      loading: false,
-      message: "",
-      error: ""
-    };
+const props = defineProps({
+  dealershipId: {
+    type: String,
+    required: true,
   },
-  methods: {
-    async submitBooking() {
-      this.loading = true;
-      this.message = "";
-      this.error = "";
+});
 
-      try {
-        console.log("Submitting booking payload:", this.form);
-        const response = await api.post("/bookings", this.form);
+const name = ref("");
+const email = ref("");
+const phone_number = ref("");
+const booking_date = ref("");
+const platform = ref("");
+const successMessage = ref(null);
+const errorMessage = ref(null);
 
-        this.message = "Booking submitted successfully ✅";
-        console.log("Booking success:", response.data);
+// ✅ format phone number as 123-456-7811
+const formatPhone = (value) => {
+  // remove all non-digits
+  let digits = value.replace(/\D/g, "");
 
-        // Reset form
-        this.form = {
-          dealership_id: "d8bf6d8c-2454-44d3-9334-2d546e980f37",
-          conversation_id: 372,
-          account_id: 12,
-          name: "",
-          email: "",
-          phone_number: "",
-          booking_date: "",
-          platform: ""
-        };
-      } catch (err) {
-        this.error = err.response?.data?.message || "Booking failed ❌";
-        console.error("Booking error:", err.response?.data || err.message);
-      } finally {
-        this.loading = false;
-      }
-    }
+  // limit to 10 digits
+  digits = digits.slice(0, 10);
+
+  // format as 123-456-7811
+  if (digits.length > 6) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  } else if (digits.length > 3) {
+    return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  } else {
+    return digits;
+  }
+};
+
+// watch phone_number and reformat automatically
+watch(phone_number, (newVal) => {
+  phone_number.value = formatPhone(newVal);
+});
+
+const submitBooking = async () => {
+  try {
+    const payload = {
+      dealership_id: props.dealershipId,
+      account_id: 12,          // ✅ required (replace with dynamic if needed)
+      conversation_id: 372,    // ✅ required (replace with dynamic if needed)
+      name: name.value,
+      email: email.value,
+      phone_number: phone_number.value,
+      booking_date: booking_date.value,
+      platform: platform.value,
+    };
+
+    console.log("Submitting booking payload:", payload);
+
+    const res = await api.post("/bookings", payload);
+    console.log("Booking response:", res.data);
+
+    successMessage.value = "Booking request submitted successfully!";
+    errorMessage.value = null;
+
+    // reset form
+    name.value = "";
+    email.value = "";
+    phone_number.value = "";
+    booking_date.value = "";
+    platform.value = "";
+  } catch (err) {
+    console.error("Booking error:", err.response?.data || err);
+    errorMessage.value =
+      err.response?.data?.message || "Failed to submit booking.";
+    successMessage.value = null;
   }
 };
 </script>
 
-<style scoped>
-.card {
-  background: #ffffff;
-}
-</style>
+
+<template>
+  <div>
+    <form @submit.prevent="submitBooking" class="p-3 border rounded shadow-sm bg-white">
+      <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input v-model="name" type="text" class="form-control" required />
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input v-model="email" type="email" class="form-control" required />
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input v-model="phone_number" type="text" class="form-control" required />
+      </div>
+
+      <!-- Booking Date -->
+      <div class="mb-3">
+        <label class="form-label">Booking Date</label>
+        <input v-model="booking_date" type="date" class="form-control" required />
+      </div>
+
+      <!-- Platform -->
+      <div class="mb-3">
+        <label class="form-label">Platform</label>
+        <select v-model="platform" class="form-select" required>
+          <option disabled value="">Select Platform</option>
+          <option value="instagram">Instagram</option>
+          <option value="facebook">Facebook</option>
+          <option value="website">Website</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
+    </form>
+  </div>
+</template>

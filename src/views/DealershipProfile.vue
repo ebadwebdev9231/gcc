@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import api from "@/services/api";
 import BusinessHours from "@/components/BusinessHours.vue";
 import AddressBlock from "@/components/AddressBlock.vue";
+import BookingForm from "@/components/BookingForm.vue"; // booking form
 
 const route = useRoute();
 const dealership = ref(null);
@@ -37,27 +38,47 @@ onMounted(async () => {
     </div>
 
     <!-- Success -->
-    <div v-else-if="dealership" class="card shadow-sm p-4">
-      <h2 class="fw-bold mb-3">{{ dealership.name }}</h2>
-      <p><strong>GM:</strong> {{ dealership.general_manager }}</p>
-      <p><strong>Phone:</strong> {{ dealership.phone_number }}</p>
+    <div v-else-if="dealership">
+      <!-- Logo Centered -->
+      <div class="text-center mb-4">
+        <img
+          v-if="dealership.logo"
+          :src="dealership.logo"
+          :alt="dealership.name + ' Logo'"
+          class="img-fluid"
+          style="max-height: 120px; object-fit: contain;"
+        />
+      </div>
 
-      <a
-        :href="dealership.website"
-        target="_blank"
-        class="btn btn-outline-primary btn-sm mb-4"
-      >
-        🌐 Visit Website
-      </a>
+      <!-- Dealership Info -->
+      <div class="card shadow-sm p-4 mb-5">
+        <h2 class="fw-bold mb-3 text-center">{{ dealership.name }}</h2>
+        <p class="text-center"><strong>GM:</strong> {{ dealership.general_manager }}</p>
+        <p class="text-center"><strong>Phone:</strong> {{ dealership.phone_number }}</p>
 
-      <!-- Address -->
-      <AddressBlock
-        v-if="dealership.addresses && dealership.addresses.length"
-        :address="dealership.addresses[0]"
-      />
+        <div class="text-center mb-4">
+          <a
+            :href="dealership.website"
+            target="_blank"
+            class="btn btn-outline-primary btn-sm"
+          >
+            🌐 Visit Website
+          </a>
+        </div>
 
-      <!-- Business Hours -->
-      <BusinessHours v-if="dealership.hours" :hours="dealership.hours" />
+        <!-- Address -->
+        <AddressBlock
+          v-if="dealership.addresses && dealership.addresses.length"
+          :address="dealership.addresses[0]"
+        />
+
+        <!-- Business Hours -->
+        <BusinessHours v-if="dealership.hours" :hours="dealership.hours" />
+      </div>
+
+      <!-- Booking Form -->
+      <BookingForm :dealershipId="dealership.id" />
+
     </div>
   </div>
 </template>
