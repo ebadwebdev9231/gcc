@@ -15,7 +15,7 @@ const routes = [
   { path: '/pricing', name: 'Pricing', component: Pricing },
 
   // New Dealership routes
-  { path: "/dealerships", name: "DealershipList", component: DealershipList },
+  { path: "/dealerships-notuse", name: "DealershipList", component: DealershipList },
   { 
     path: "/dealership/:slug", 
     name: "DealershipProfile", 
