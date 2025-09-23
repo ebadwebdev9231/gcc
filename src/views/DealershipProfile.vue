@@ -4,7 +4,8 @@ import { useRoute } from "vue-router";
 import api from "@/services/api";
 import BusinessHours from "@/components/BusinessHours.vue";
 import AddressBlock from "@/components/AddressBlock.vue";
-import BookingForm from "@/components/BookingForm.vue"; // booking form
+import BookingForm from "@/components/BookingForm.vue";
+import NotFound from "@/views/NotFound.vue"; // Import NotFound
 
 const route = useRoute();
 const dealership = ref(null);
@@ -17,10 +18,14 @@ onMounted(async () => {
     if (res.data?.body?.data) {
       dealership.value = res.data.body.data;
     } else {
-      throw new Error("Unexpected API response format");
+      error.value = "notfound"; // custom flag
     }
   } catch (err) {
-    error.value = err.message || "Failed to fetch dealership";
+    if (err.response?.status === 404) {
+      error.value = "notfound";
+    } else {
+      error.value = err.message || "Failed to fetch dealership";
+    }
   } finally {
     loading.value = false;
   }
@@ -32,7 +37,10 @@ onMounted(async () => {
     <!-- Loading -->
     <div v-if="loading" class="text-center text-muted">Loading dealership...</div>
 
-    <!-- Error -->
+    <!-- Show NotFound if dealership not found -->
+    <NotFound v-else-if="error === 'notfound'" />
+
+    <!-- Show error alert for other issues -->
     <div v-else-if="error" class="alert alert-danger text-center">
       {{ error }}
     </div>
@@ -78,7 +86,6 @@ onMounted(async () => {
 
       <!-- Booking Form -->
       <BookingForm :dealershipId="dealership.id" />
-
     </div>
   </div>
 </template>

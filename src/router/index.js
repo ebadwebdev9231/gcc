@@ -3,10 +3,8 @@ import Home from '../views/Home.vue'
 import Integration from '../views/Integration.vue'
 import ContactPage from '@/views/ContactPage.vue'
 import Pricing from '@/views/Pricing.vue'
-
-// New dealership routes
-import DealershipList from "@/views/DealershipList.vue";
 import DealershipProfile from "@/views/DealershipProfile.vue"
+import NotFound from "@/views/NotFound.vue"
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -14,14 +12,11 @@ const routes = [
   { path: '/contact', name: 'Contact', component: ContactPage },
   { path: '/pricing', name: 'Pricing', component: Pricing },
 
-  // New Dealership routes
-  { path: "/dealerships-notuse", name: "DealershipList", component: DealershipList },
-  { 
-    path: "/dealership/:slug", 
-    name: "DealershipProfile", 
-    component: DealershipProfile, 
-    props: true 
-  }
+  // Dealership route
+  { path: '/:slug', name: 'DealershipProfile', component: DealershipProfile, props: true },
+
+  // Catch all (must be LAST)
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 
 const router = createRouter({
