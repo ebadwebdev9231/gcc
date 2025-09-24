@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import api from "@/services/api";
 
 const props = defineProps({
@@ -8,6 +9,13 @@ const props = defineProps({
     required: true,
   },
 });
+
+const route = useRoute(); // ✅ access URL query params
+
+// Extract query params
+const accountId = route.query.account_id || null;
+const conversationId = route.query.conversation_id || null;
+const platform = route.query.platform || null;
 
 const name = ref("");
 const email = ref("");
@@ -19,7 +27,7 @@ const errorMessage = ref(null);
 const fieldErrors = ref({});
 const loading = ref(false);
 
-// ✅ format phone number as 123-456-7890
+// ✅ format phone number as 123-456-7811
 const formatPhone = (value) => {
   let digits = value.replace(/\D/g, "").slice(0, 10);
   if (digits.length > 6) {
@@ -31,7 +39,7 @@ const formatPhone = (value) => {
   }
 };
 
-// Watch phone_number and auto-format
+// watch phone_number and reformat automatically
 watch(phone_number, (newVal) => {
   phone_number.value = formatPhone(newVal);
 });
@@ -41,9 +49,15 @@ const validateForm = () => {
   let errors = {};
 
   if (!name.value.trim()) errors.name = "Name is required";
-  if (!email.value.trim()) errors.email = "Email is required";
 
-  // Phone validation: must match ###-###-####
+  // Email validation
+  if (!email.value.trim()) {
+    errors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    errors.email = "Please enter a valid email address (e.g. abc@example.com)";
+  }
+
+  // Phone validation
   if (!phone_number.value.trim()) {
     errors.phone_number = "Phone number is required";
   } else if (!/^\d{3}-\d{3}-\d{4}$/.test(phone_number.value)) {
@@ -59,14 +73,22 @@ const validateForm = () => {
 // ✅ clear individual field error when fixed
 watch([name, email, phone_number, booking_date], () => {
   if (name.value.trim()) delete fieldErrors.value.name;
-  if (email.value.trim()) delete fieldErrors.value.email;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) delete fieldErrors.value.email;
   if (/^\d{3}-\d{3}-\d{4}$/.test(phone_number.value)) delete fieldErrors.value.phone_number;
   if (booking_date.value.trim()) delete fieldErrors.value.booking_date;
 });
 
+
 const submitBooking = async () => {
   successMessage.value = null;
   errorMessage.value = null;
+
+  // ✅ check if URL params are missing
+  if (!accountId || !conversationId || !platform) {
+    errorMessage.value =
+      "Missing booking parameters. Please ensure the link includes account_id, conversation_id, and platform.";
+    return;
+  }
 
   if (!validateForm()) return;
 
@@ -75,15 +97,16 @@ const submitBooking = async () => {
   try {
     const payload = {
       dealership_id: props.dealershipId,
-      account_id: 12,
-      conversation_id: 372,
+      account_id: accountId, // ✅ from URL
+      conversation_id: conversationId, // ✅ from URL
+      platform: platform, // ✅ from URL
       name: name.value,
       email: email.value,
       phone_number: phone_number.value,
       booking_date: booking_date.value,
     };
 
-    await api.post("/bookings", payload);
+    const res = await api.post("/bookings", payload);
 
     successMessage.value = "Booking request submitted successfully!";
     name.value = "";
@@ -92,7 +115,6 @@ const submitBooking = async () => {
     booking_date.value = "";
     fieldErrors.value = {};
   } catch (err) {
-    // Only show backend error if it's not phone related
     if (err.response?.data?.errors) {
       fieldErrors.value = err.response.data.errors;
     } else {
@@ -113,14 +135,14 @@ const submitBooking = async () => {
       <!-- Name -->
       <div class="mb-3">
         <label class="form-label">Name</label>
-        <input v-model="name" type="text" class="form-control" />
+        <input v-model="name" type="text" class="form-control" placeholder="Enter your full Name" />
         <div v-if="fieldErrors.name" class="text-danger small">{{ fieldErrors.name }}</div>
       </div>
 
       <!-- Email -->
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input v-model="email" type="email" class="form-control" />
+        <input v-model="email" type="email" class="form-control" placeholder="abc@example.com" />
         <div v-if="fieldErrors.email" class="text-danger small">{{ fieldErrors.email }}</div>
       </div>
 
