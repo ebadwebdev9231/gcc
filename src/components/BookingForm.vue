@@ -83,23 +83,24 @@ const submitBooking = async () => {
   successMessage.value = null;
   errorMessage.value = null;
 
-  // ✅ check if URL params are missing
+  // ✅ Step 1: Validate form fields first
+  if (!validateForm()) return;
+
+  // ✅ Step 2: Then check if URL params are missing
   if (!accountId || !conversationId || !platform) {
     errorMessage.value =
       "Missing booking parameters. Please ensure the link includes account_id, conversation_id, and platform.";
     return;
   }
 
-  if (!validateForm()) return;
-
   loading.value = true;
 
   try {
     const payload = {
       dealership_id: props.dealershipId,
-      account_id: accountId, // ✅ from URL
-      conversation_id: conversationId, // ✅ from URL
-      platform: platform, // ✅ from URL
+      account_id: accountId, // from URL
+      conversation_id: conversationId, // from URL
+      platform: platform, // from URL
       name: name.value,
       email: email.value,
       phone_number: phone_number.value,
@@ -124,6 +125,7 @@ const submitBooking = async () => {
     loading.value = false;
   }
 };
+
 </script>
 
 <template>
