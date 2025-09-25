@@ -20,7 +20,7 @@ const platform = route.query.platform || null;
 const name = ref("");
 const email = ref("");
 const phone_number = ref("");
-const booking_date = ref("");
+const help_request_message = ref("");
 
 const successMessage = ref(null);
 const errorMessage = ref(null);
@@ -64,20 +64,22 @@ const validateForm = () => {
     errors.phone_number = "Please enter a valid phone number (123-456-7890)";
   }
 
-  if (!booking_date.value.trim()) errors.booking_date = "Booking date is required";
+  // Help request message validation
+  if (!help_request_message.value.trim()) {
+    errors.help_request_message = "Help request message is required";
+  }
 
   fieldErrors.value = errors;
   return Object.keys(errors).length === 0;
 };
 
 // ✅ clear individual field error when fixed
-watch([name, email, phone_number, booking_date], () => {
+watch([name, email, phone_number, help_request_message], () => {
   if (name.value.trim()) delete fieldErrors.value.name;
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) delete fieldErrors.value.email;
   if (/^\d{3}-\d{3}-\d{4}$/.test(phone_number.value)) delete fieldErrors.value.phone_number;
-  if (booking_date.value.trim()) delete fieldErrors.value.booking_date;
+  if (help_request_message.value.trim()) delete fieldErrors.value.help_request_message;
 });
-
 
 const submitBooking = async () => {
   successMessage.value = null;
@@ -104,7 +106,7 @@ const submitBooking = async () => {
       name: name.value,
       email: email.value,
       phone_number: phone_number.value,
-      booking_date: booking_date.value,
+      help_request_message: help_request_message.value,
     };
 
     const res = await api.post("/bookings", payload);
@@ -113,7 +115,7 @@ const submitBooking = async () => {
     name.value = "";
     email.value = "";
     phone_number.value = "";
-    booking_date.value = "";
+    help_request_message.value = "";
     fieldErrors.value = {};
   } catch (err) {
     if (err.response?.data?.errors) {
@@ -125,7 +127,6 @@ const submitBooking = async () => {
     loading.value = false;
   }
 };
-
 </script>
 
 <template>
@@ -137,7 +138,7 @@ const submitBooking = async () => {
       <!-- Name -->
       <div class="mb-3">
         <label class="form-label">Name</label>
-        <input v-model="name" type="text" class="form-control" placeholder="Enter your full Name" />
+        <input v-model="name" type="text" class="form-control" placeholder="Enter your full name" />
         <div v-if="fieldErrors.name" class="text-danger small">{{ fieldErrors.name }}</div>
       </div>
 
@@ -155,11 +156,18 @@ const submitBooking = async () => {
         <div v-if="fieldErrors.phone_number" class="text-danger small">{{ fieldErrors.phone_number }}</div>
       </div>
 
-      <!-- Booking Date -->
+      <!-- Help Request Message -->
       <div class="mb-3">
-        <label class="form-label">Booking Date</label>
-        <input v-model="booking_date" type="date" class="form-control" />
-        <div v-if="fieldErrors.booking_date" class="text-danger small">{{ fieldErrors.booking_date }}</div>
+        <label class="form-label">Help Request Message</label>
+        <textarea
+          v-model="help_request_message"
+          class="form-control"
+          placeholder="Write your help request here..."
+          rows="3"
+        ></textarea>
+        <div v-if="fieldErrors.help_request_message" class="text-danger small">
+          {{ fieldErrors.help_request_message }}
+        </div>
       </div>
 
       <!-- Submit Button -->
