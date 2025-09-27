@@ -130,56 +130,151 @@ const submitBooking = async () => {
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent="submitBooking" class="p-3 border rounded shadow-sm bg-white">
+  <div class="form-wrapper">
+    <div class="form-card">
+      <!-- Icon + Title -->
+      <div class="text-center mb-4">
+        <div class="icon-circle">💬</div>
+        <h4 class="fw-bold mt-2">How can we help?</h4>
+      </div>
+
+      <!-- Success / Error -->
       <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
       <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
-      <!-- Name -->
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input v-model="name" type="text" class="form-control" placeholder="Enter your full name" />
-        <div v-if="fieldErrors.name" class="text-danger small">{{ fieldErrors.name }}</div>
-      </div>
-
-      <!-- Email -->
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input v-model="email" type="email" class="form-control" placeholder="abc@example.com" />
-        <div v-if="fieldErrors.email" class="text-danger small">{{ fieldErrors.email }}</div>
-      </div>
-
-      <!-- Phone -->
-      <div class="mb-3">
-        <label class="form-label">Phone Number</label>
-        <input v-model="phone_number" type="text" class="form-control" placeholder="123-456-7890" />
-        <div v-if="fieldErrors.phone_number" class="text-danger small">{{ fieldErrors.phone_number }}</div>
-      </div>
-
-      <!-- Help Request Message -->
-      <div class="mb-3">
-        <label class="form-label">Help Request Message</label>
-        <textarea
-          v-model="help_request_message"
-          class="form-control"
-          placeholder="Write your help request here..."
-          rows="3"
-        ></textarea>
-        <div v-if="fieldErrors.help_request_message" class="text-danger small">
-          {{ fieldErrors.help_request_message }}
+      <!-- Form -->
+      <form @submit.prevent="submitBooking">
+        <!-- Name -->
+        <div class="mb-3">
+          <input
+            v-model="name"
+            type="text"
+            class="form-control custom-input"
+            placeholder="Your name"
+          />
+          <div v-if="fieldErrors.name" class="text-danger small">{{ fieldErrors.name }}</div>
         </div>
-      </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary w-100" :disabled="loading">
-        <span v-if="loading">
-          <span class="spinner-border spinner-border-sm me-2"></span>
-          Submitting...
-        </span>
-        <span v-else>
-          Submit Booking
-        </span>
-      </button>
-    </form>
+        <!-- Email -->
+        <div class="mb-3">
+          <input
+            v-model="email"
+            type="email"
+            class="form-control custom-input"
+            placeholder="Your email"
+          />
+          <div v-if="fieldErrors.email" class="text-danger small">{{ fieldErrors.email }}</div>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <input
+            v-model="phone_number"
+            type="text"
+            class="form-control custom-input"
+            placeholder="Phone number"
+          />
+          <div v-if="fieldErrors.phone_number" class="text-danger small">{{ fieldErrors.phone_number }}</div>
+        </div>
+
+        <!-- Help Request -->
+        <div class="mb-3">
+          <textarea
+            v-model="help_request_message"
+            class="form-control custom-input"
+            placeholder="How can we help?"
+            rows="3"
+          ></textarea>
+          <div v-if="fieldErrors.help_request_message" class="text-danger small">
+            {{ fieldErrors.help_request_message }}
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn w-100" :disabled="loading">
+          <span v-if="loading">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Submitting...
+          </span>
+          <span v-else>Submit</span>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <p class="footer-text mt-3">Someone will get back to you ASAP</p>
+    </div>
   </div>
 </template>
+
+<style scoped>
+/* Wrapper for centering */
+.form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 15px;
+}
+
+/* White card */
+.form-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 3% 8%;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Circle icon */
+.icon-circle {
+  font-size: 28px;
+  background: #f1f5f9;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Input */
+.custom-input {
+  border-radius: 4px;
+  padding: 12px 15px;
+  border: 1px solid #999;
+  margin-top: 40px;
+  width: 100%;
+}
+
+::placeholder {
+  font-style: oblique;
+  color: #888 !important;
+}
+
+/* Submit button */
+.submit-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Footer text */
+.footer-text {
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+}
+</style>
