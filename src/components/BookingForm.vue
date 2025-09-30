@@ -214,7 +214,7 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0;
+  padding: 16px 0;
 }
 
 /* White card */
@@ -286,5 +286,16 @@ const submitBooking = async () => {
   text-align: center;
   font-size: 13px;
   color: #666;
+}
+
+@media(max-width:480px) {
+  /* Input */
+.custom-input {
+  margin-top: 32px;
+}
+.submit-btn {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
 }
 </style>
