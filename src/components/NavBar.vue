@@ -16,10 +16,10 @@
 
         <!-- Nav Links -->
         <ul :class="['nav-links', { open: menuOpen }]">
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/integrations">Integrations</router-link></li>
-          <li><router-link to="/pricing">Pricing</router-link></li>
-          <li><router-link to="/contact">Contact</router-link></li>
+          <li><router-link to="/" @click.native="closeMenu">Home</router-link></li>
+          <li><router-link to="/integrations" @click.native="closeMenu">Integrations</router-link></li>
+          <li><router-link to="/pricing" @click.native="closeMenu">Pricing</router-link></li>
+          <li><router-link to="/contact" @click.native="closeMenu">Contact</router-link></li>
         </ul>
       </div>
     </div>
@@ -38,9 +38,13 @@ export default {
     toggleMenu() {
       this.menuOpen = !this.menuOpen;
     },
+    closeMenu() {
+      this.menuOpen = false;
+    },
   },
 };
 </script>
+
 
 <style scoped>
 .navigation {

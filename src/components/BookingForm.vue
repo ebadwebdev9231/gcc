@@ -134,7 +134,9 @@ const submitBooking = async () => {
     <div class="form-card">
       <!-- Icon + Title -->
       <div class="text-center mb-4">
-        <div class="icon-circle">💬</div>
+        <div class="icon-circle">
+          <img src="@/assets/booking_form_img.png" alt="Help Icon" class="icon-img" />
+        </div>
         <h4 class="fw-bold mt-2">How can we help?</h4>
       </div>
 
@@ -191,7 +193,7 @@ const submitBooking = async () => {
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-btn w-100" :disabled="loading">
+        <button type="submit" class="submit-btn" :disabled="loading">
           <span v-if="loading">
             <span class="spinner-border spinner-border-sm me-2"></span>
             Submitting...
@@ -212,22 +214,20 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 15px;
+  padding: 15px;
 }
 
 /* White card */
 .form-card {
   background: #fff;
   border-radius: 10px;
-  padding: 3% 8%;
+  padding: 1% 8%;
   width: 100%;
-  max-width: 700px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
 }
 
-/* Circle icon */
+/* Circle wrapper */
 .icon-circle {
-  font-size: 28px;
   background: #f1f5f9;
   width: 60px;
   height: 60px;
@@ -236,14 +236,23 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* ensures image stays inside circle */
 }
+
+/* Image inside circle */
+.icon-img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
 
 /* Input */
 .custom-input {
   border-radius: 4px;
   padding: 12px 15px;
   border: 1px solid #999;
-  margin-top: 40px;
+  margin-top: 50px;
   width: 100%;
 }
 
@@ -254,11 +263,12 @@ const submitBooking = async () => {
 
 /* Submit button */
 .submit-btn {
+  width: 90%;
   background: #000;
   color: #fff;
   border: none;
   padding: 12px;
-  margin-top: 25px;
+  margin-top: 35px;
   margin-bottom: 20px;
   border-radius: 3px;
   font-weight: bold;

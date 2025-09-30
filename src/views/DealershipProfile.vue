@@ -2,15 +2,13 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import api from "@/services/api";
-import BusinessHours from "@/components/BusinessHours.vue";
-import AddressBlock from "@/components/AddressBlock.vue";
-import BookingForm from "@/components/BookingForm.vue";
-import NotFound from "@/views/NotFound.vue"; // Import NotFound
+import BookingForm from "@/components/BookingForm.vue"; // Popup form
 
 const route = useRoute();
 const dealership = ref(null);
 const error = ref(null);
 const loading = ref(true);
+const showForm = ref(false); // ✅ toggle popup
 
 onMounted(async () => {
   try {
@@ -18,14 +16,10 @@ onMounted(async () => {
     if (res.data?.body?.data) {
       dealership.value = res.data.body.data;
     } else {
-      error.value = "notfound"; // custom flag
+      error.value = "notfound";
     }
   } catch (err) {
-    if (err.response?.status === 404) {
-      error.value = "notfound";
-    } else {
-      error.value = err.message || "Failed to fetch dealership";
-    }
+    error.value = err.message || "Failed to fetch dealership";
   } finally {
     loading.value = false;
   }
@@ -33,59 +27,138 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container py-5">
+  <div class="container vh-80 py-5 text-center d-flex justify-content-center align-items-center">
     <!-- Loading -->
-    <div v-if="loading" class="text-center text-muted">Loading dealership...</div>
+    <div v-if="loading" class="text-muted">Loading...</div>
 
-    <!-- Show NotFound if dealership not found -->
-    <NotFound v-else-if="error === 'notfound'" />
-
-    <!-- Show error alert for other issues -->
-    <div v-else-if="error" class="alert alert-danger text-center">
-      {{ error }}
-    </div>
+    <!-- Error -->
+    <div v-else-if="error" class="alert alert-danger">{{ error }}</div>
 
     <!-- Success -->
     <div v-else-if="dealership">
-      <!-- Logo Centered -->
-      <div class="text-center mb-4">
-        <img
-          v-if="dealership.logo"
-          :src="dealership.logo"
-          :alt="dealership.name + ' Logo'"
-          class="img-fluid"
-          style="max-height: 120px; object-fit: contain;"
-        />
-      </div>
+      <!-- Centered Button -->
+      <button class="open-btn" @click="showForm = true">
+        Open Help Form
+      </button>
 
-      <!-- Dealership Info -->
-      <div class="card shadow-sm p-4 mb-5">
-        <h2 class="fw-bold mb-3 text-center">{{ dealership.name }}</h2>
-        <p class="text-center"><strong>GM:</strong> {{ dealership.general_manager }}</p>
-        <p class="text-center"><strong>Phone:</strong> {{ dealership.phone_number }}</p>
-
-        <div class="text-center mb-4">
-          <a
-            :href="dealership.website"
-            target="_blank"
-            class="btn btn-outline-primary btn-sm"
-          >
-            🌐 Visit Website
-          </a>
+      <!-- Popup Form -->
+      <div v-if="showForm" class="popup-overlay">
+        <div class="popup-content">
+          <button class="close-btn" @click="showForm = false">&times;</button>
+          <BookingForm :dealershipId="dealership.id" />
         </div>
-
-        <!-- Address -->
-        <AddressBlock
-          v-if="dealership.addresses && dealership.addresses.length"
-          :address="dealership.addresses[0]"
-        />
-
-        <!-- Business Hours -->
-        <BusinessHours v-if="dealership.hours" :hours="dealership.hours" />
       </div>
-
-      <!-- Booking Form -->
-      <BookingForm :dealershipId="dealership.id" />
     </div>
   </div>
 </template>
+
+<style scoped>
+.vh-80 {
+  min-height: 80vh;
+}
+/* Button in center */
+.open-btn {
+  background: #000;
+  color: #fff;
+  padding: 18px;
+  width: 400px;
+  font-size: 18px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+.open-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Form popup box */
+.popup-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Hide scrollbar but keep scrolling */
+.popup-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.popup-content {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ✅ Responsive adjustments */
+@media (max-width: 768px) {
+  .popup-content {
+    max-width: 95%;   /* full width on tablets */
+    padding: 16px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    max-width: 95%;   /* almost full screen on mobile */
+    padding: 14px;
+    border-radius: 6px;
+  }
+
+  .open-btn {
+    font-size: 16px;
+    padding: 16px;
+    width: 250px;
+  }
+
+  .close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+}
+</style>
