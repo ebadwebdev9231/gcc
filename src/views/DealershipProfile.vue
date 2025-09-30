@@ -88,7 +88,7 @@ onMounted(async () => {
   justify-content: center;
   z-index: 1000;
   overflow-y: auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 /* Form popup box */
@@ -144,8 +144,8 @@ onMounted(async () => {
 
 @media (max-width: 480px) {
   .popup-content {
-    max-width: 95%;   /* almost full screen on mobile */
-    padding: 14px;
+    max-width: 100%;   /* almost full screen on mobile */
+    padding: 14px 0;
     border-radius: 6px;
   }
 

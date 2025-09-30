@@ -214,7 +214,7 @@ const submitBooking = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 10px 0;
 }
 
 /* White card */
@@ -223,7 +223,7 @@ const submitBooking = async () => {
   border-radius: 10px;
   padding: 1% 8%;
   width: 100%;
-  max-width: 550px;
+  max-width: 520px;
 }
 
 /* Circle wrapper */
