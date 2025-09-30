@@ -38,7 +38,7 @@ onMounted(async () => {
     <div v-else-if="dealership">
       <!-- Centered Button -->
       <button class="open-btn" @click="showForm = true">
-        Open Help Form
+        Booking Form
       </button>
 
       <!-- Popup Form -->
@@ -62,7 +62,7 @@ onMounted(async () => {
   color: #fff;
   padding: 18px;
   width: 400px;
-  font-size: 18px;
+  font-size: 22px;
   border-radius: 3px;
   border: none;
   cursor: pointer;
@@ -150,7 +150,7 @@ onMounted(async () => {
   }
 
   .open-btn {
-    font-size: 16px;
+    font-size: 17px;
     padding: 16px;
     width: 250px;
   }
