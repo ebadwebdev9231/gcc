@@ -291,7 +291,7 @@ const submitBooking = async () => {
 @media(max-width:480px) {
   /* Input */
 .custom-input {
-  margin-top: 32px;
+  margin-top: 35px;
 }
 .submit-btn {
   margin-top: 25px;
